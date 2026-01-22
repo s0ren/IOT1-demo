@@ -21,6 +21,6 @@ void loop() {
   digitalWrite(relayPin, LOW); // Turn the relay ON
   delay(200);
   digitalWrite(relayPin, HIGH);  // Turn the relay OFF
-  delay(5000); 
+  delay(10000); 
 
 }
