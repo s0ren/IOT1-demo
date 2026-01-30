@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
-#define potPin 35  // Define the analog pin connected to the potentiometer
+#define moistPin 35  // Define the analog pin connected to the potentiometer
+#define tankLevelPin 33 // Define the analog pin connected to the tank level sensor
 #define relayPin 4   // Define the digital pin connected to the relay
 
 // variable for storing the potentiometer value
@@ -16,31 +17,47 @@ float moistSensor2Pct(int sensorValue) {
 }
 
 float getMoistPct(int pin) {
-  int potValue = analogRead(potPin);
+  int potValue = analogRead(moistPin);
   return moistSensor2Pct(potValue);
 }
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
-  pinMode(potPin, INPUT);   // Set the potentiometer pin as an input
+  pinMode(moistPin, INPUT);   // Set the potentiometer pin as an input
+  pinMode(tankLevelPin, INPUT_PULLDOWN); // Set the tank level pin as an input
   pinMode(relayPin, OUTPUT);  // Set the relay pin as an output
 }
 
 void loop() {
-  // Reading potentiometer value
-  // potValue = analogRead(potPin);
-  // Serial.println(potValue);
-  float soilMoisture = getMoistPct(potPin);
+  
+  bool tankLevel = !digitalRead(tankLevelPin);
+
+  if (tankLevel == LOW) {
+    Serial.println("Water tank is empty! Please refill.");
+  }
+  else {
+    Serial.println("Water tank has sufficient water.");
+  }
+
+  
+  float soilMoisture = getMoistPct(moistPin);
   Serial.print("Moisture: ");
   Serial.println(getMoistPct(soilMoisture));
 
-  float threshold = 0.3; // 30% moisture threshold
+  float threshold = 0.20; // % moisture threshold
+  
   if (soilMoisture < threshold) {
     Serial.println("Soil is dry. Activating relay to water the plant.");
-    digitalWrite(relayPin, LOW); // Turn the relay ON
-    delay(200); // Water for 0.2 seconds
-    digitalWrite(relayPin, HIGH);  // Turn the relay OFF
+    if(tankLevel == LOW) {
+      Serial.println("Cannot water the plant as the water tank is empty.");
+    }
+    else 
+    {
+      digitalWrite(relayPin, LOW); // Turn the relay ON
+      delay(200); // Water for 0.2 seconds
+      digitalWrite(relayPin, HIGH);  // Turn the relay OFF
+    }
   }
   else {
     Serial.println("Soil moisture is sufficient. No watering needed.");
