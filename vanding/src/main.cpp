@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
 #define moistPin 35  // Define the analog pin connected to the potentiometer
+#define moisturePowerPin 32 // Define the digital pin used to power the moisture sensor
 #define pumpPin 4   // Define the digital pin connected to the relay, and pump
 #define tankLevelPin 33 // Define the analog pin connected to the tank level sensor
 
@@ -11,15 +12,27 @@ void setup() {
   // int result = myFunction(2, 3);
   Serial.begin(115200);
   pinMode(moistPin, INPUT);   // Set the potentiometer pin as an input
+  pinMode(moisturePowerPin, OUTPUT); // Set the moisture sensor power pin as an output
   pinMode(pumpPin, OUTPUT);  // Set the relay pin as an output
   pinMode(tankLevelPin, INPUT_PULLDOWN); // Set the tank level pin as an input
+}
+
+int readMoisture(u_int analogPin, u_int powerPin)
+{
+  digitalWrite(powerPin, HIGH); // Power the moisture sensor
+  delay(100); // Wait for the sensor to stabilize
+  int sensorValue = analogRead(analogPin); // Read the sensor value
+  digitalWrite(powerPin, LOW); // Turn off power to the sensor
+  return sensorValue;
 }
 
 void loop() {
 
   // aflæse sensorer
+ 
   // moitsture sensor
-  int moistLevel = analogRead(moistPin);
+  int moistLevel = readMoisture(moistPin, moisturePowerPin);
+  
   #ifdef DEBUG
   Serial.print("Moisture Sensor Value: ");  
   Serial.println(moistLevel);
@@ -28,7 +41,7 @@ void loop() {
   bool tankLevel = !digitalRead(tankLevelPin);
 
   // hvis jorden er tør og der er vand i tanken
-  if (moistLevel > 2000)
+  if (moistLevel > 3000)
   {
     Serial.println("Soil is dry. Activating relay to water the plant.");
     if(tankLevel == LOW) {
@@ -48,7 +61,7 @@ void loop() {
   }
  
   // vent et stykke tid, til næste aflæsning
-  delay(1000); // 1 seconds delay
+  delay(5000); // 1 seconds delay
 
 /*
   bool tankLevel = !digitalRead(tankLevelPin);
