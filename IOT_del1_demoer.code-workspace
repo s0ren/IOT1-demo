@@ -1,0 +1,68 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "hello_world_serial",
+			"path": "hello_world_serial"
+		},
+		{
+			"name": "hello_world_blink_delay",
+			"path": "hello_world_blink_delay"
+		},
+		{
+			"name": "hello_world_blink_millis",
+			"path": "hello_world_blink_millis"
+		},
+		{
+			"name": "platformio_test",
+			"path": "platformio_test"
+		},
+		{
+			"name": "cpp_intro_statistik",
+			"path": "cpp_intro_statistik"
+		},
+		{
+			"name": "cpp_intro_pointere",
+			"path": "cpp_intro_pointere"
+		},
+		{
+			"name": "esp32_specs_chipinfo",
+			"path": "esp32_specs_chipinfo"
+		},
+		{
+			"name": "debouncing_uden",
+			"path": "debouncing_uden"
+		},
+		{
+			"name": "debouncing_ezbutton",
+			"path": "debouncing_ezbutton"
+		},
+		{
+			"name": "knapper_knap_led",
+			"path": "knapper_knap_led"
+		},
+		{
+			"name": "lysdioder_blink_millis",
+			"path": "lysdioder_blink_millis"
+		},
+		{
+			"name": "lysdioder_fade_pwm",
+			"path": "lysdioder_fade_pwm"
+		},
+		{
+			"name": "potentiometer_laes",
+			"path": "potentiometer_laes"
+		},
+		{
+			"name": "standardopstilling_test",
+			"path": "standardopstilling_test"
+		},
+		{
+			"name": "wifi_forbind",
+			"path": "wifi_forbind"
+		}
+	],
+	"settings": {}
+}
